@@ -1,7 +1,7 @@
 package com.indrive.exceptions;
 
-public class PassengerNotFoundException extends RuntimeException {
-  public PassengerNotFoundException(String message) {
-    super(message);
-  }
+public class PassengerNotFoundException extends InDriveException {
+    public PassengerNotFoundException(String message) {
+        super(message);
+    }
 }
