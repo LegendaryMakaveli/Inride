@@ -1,6 +1,6 @@
-package com.indrive.exceptions.AdminExceptions;
+package com.indrive.exceptions;
 
-public class ValidateDriverException extends RuntimeException {
+public class ValidateDriverException extends InDriveException {
     public ValidateDriverException(String message) {
         super(message);
     }
