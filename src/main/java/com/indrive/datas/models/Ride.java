@@ -12,4 +12,5 @@ public class Ride {
     private double rideFee;
     private String driverId;
     private String passengerId;
+    private double rideDistance;
 }

@@ -14,5 +14,5 @@ public class Passenger {
     private String email;
     private String phone;
     private String address;
-    private Location location;
+    private Location currentlocation;
 }
