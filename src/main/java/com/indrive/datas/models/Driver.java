@@ -18,4 +18,5 @@ public class Driver {
     private boolean status;
     private Location currentLocation;
     private String plateNumber;
+    private boolean isDeleted;
 }

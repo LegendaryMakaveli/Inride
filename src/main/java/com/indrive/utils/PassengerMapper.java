@@ -2,8 +2,8 @@ package com.indrive.utils;
 
 
 import com.indrive.datas.models.Passenger;
-import com.indrive.dtos.requets.RegisterPassengerRequest;
-import com.indrive.dtos.responses.RegisterPassengerResponse;
+import com.indrive.dtos.requets.AdminRequests.RegisterPassengerRequest;
+import com.indrive.dtos.responses.AdminResponses.RegisterPassengerResponse;
 
 public class PassengerMapper {
 
