@@ -1,9 +1,16 @@
 package com.indrive.utils;
 
 
+import com.indrive.datas.models.Driver;
 import com.indrive.datas.models.Passenger;
+import com.indrive.datas.models.RideRequest;
+import com.indrive.datas.models.RideStatus;
+import com.indrive.dtos.requets.BookRideRequest;
+import com.indrive.dtos.requets.CancelRideRequest;
 import com.indrive.dtos.requets.RegisterPassengerRequest;
 import com.indrive.dtos.responses.RegisterPassengerResponse;
+
+import java.util.HashMap;
 
 public class PassengerMapper {
 
@@ -23,5 +30,14 @@ public class PassengerMapper {
         registerPassengerResponse.setPhone(passenger.getPhone());
         registerPassengerResponse.setMessage("Register successful");
         return registerPassengerResponse;
+    }
+    public static RideRequest map(BookRideRequest request){
+        RideRequest rideRequest = new RideRequest();
+        rideRequest.setPassengerId(request.getPassengerId());
+        rideRequest.setStatus(RideStatus.PENDING);
+        rideRequest.setDestination(request.getDestination());
+        rideRequest.setPrice(request.getFee());
+        rideRequest.setAppliedDrivers(new HashMap<String, Driver>());
+        return rideRequest;
     }
 }

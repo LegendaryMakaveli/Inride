@@ -15,7 +15,8 @@ public class Driver {
     private String phone;
     private String address;
     private List<Ride> listOfRide;
-    private boolean status;
+    private boolean activeStatus;
+    private boolean acceptanceStatus;
     private Location currentLocation;
     private String plateNumber;
 }
