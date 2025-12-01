@@ -14,6 +14,7 @@ public class Driver {
     private String email;
     private String phone;
     private String address;
+    private String userName;
     private List<Ride> listOfRide;
     private boolean status;
     private Location currentLocation;
