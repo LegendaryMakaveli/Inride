@@ -1,4 +1,4 @@
-package com.indrive.dtos.responses;
+package com.indrive.dtos.responses.AdminResponses;
 
 import lombok.Data;
 

@@ -3,12 +3,8 @@ package com.indrive.utils;
 
 import com.indrive.datas.models.Driver;
 import com.indrive.datas.models.Passenger;
-import com.indrive.datas.models.RideRequest;
-import com.indrive.datas.models.RideStatus;
-import com.indrive.dtos.requets.BookRideRequest;
-import com.indrive.dtos.requets.CancelRideRequest;
-import com.indrive.dtos.requets.RegisterPassengerRequest;
-import com.indrive.dtos.responses.RegisterPassengerResponse;
+import com.indrive.dtos.requets.AdminRequests.RegisterPassengerRequest;
+import com.indrive.dtos.responses.AdminResponses.RegisterPassengerResponse;
 
 import java.util.HashMap;
 

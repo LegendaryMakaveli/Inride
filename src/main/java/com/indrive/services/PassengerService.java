@@ -1,10 +1,12 @@
 package com.indrive.services;
 
-import com.indrive.dtos.requets.BookRideRequest;
-import com.indrive.dtos.responses.BookRideResponse;
-import com.indrive.dtos.responses.CancelRideResponse;
+import com.indrive.dtos.requets.RegisterPassengerRequest;
+import com.indrive.dtos.responses.RegisterPassengerResponse;
 
 public interface PassengerService {
-    BookRideResponse bookRide(BookRideRequest request);
-    CancelRideResponse cancelRide(String rideRequestId);
+
+    RegisterPassengerResponse registerPassenger(RegisterPassengerRequest Request);
+
+
+
 }

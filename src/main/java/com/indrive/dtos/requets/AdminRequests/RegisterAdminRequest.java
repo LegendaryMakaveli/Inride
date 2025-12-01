@@ -1,4 +1,4 @@
-package com.indrive.dtos.requets;
+package com.indrive.dtos.requets.AdminRequests;
 
 import lombok.Data;
 
@@ -8,7 +8,6 @@ public class RegisterAdminRequest {
     private String name;
     private String email;
     private String password;
-    private String confirmPassword;
     private String phoneNumber;
     private String address;
 }

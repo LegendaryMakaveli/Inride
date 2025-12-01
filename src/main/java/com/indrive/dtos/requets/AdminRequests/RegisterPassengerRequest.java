@@ -1,4 +1,4 @@
-package com.indrive.dtos.requets;
+package com.indrive.dtos.requets.AdminRequests;
 
 import lombok.Data;
 

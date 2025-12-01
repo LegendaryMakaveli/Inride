@@ -15,4 +15,5 @@ public class Passenger {
     private String phone;
     private String address;
     private Location currentlocation;
+    private boolean isDeleted;
 }
