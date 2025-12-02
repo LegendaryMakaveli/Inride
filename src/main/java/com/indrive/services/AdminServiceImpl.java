@@ -58,7 +58,7 @@ public class AdminServiceImpl implements  AdminService {
 
     @Override
     public DeleteDriverResponse deleteDriver(DeleteDriverRequest request) {
-        if(request.getId() ==  null || request.getId().trim().isEmpty());
+        if(request.getId() ==  null || request.getId().trim().isEmpty())throw new DriverNotFoundException("Driver not found");
         Driver myDriver = mapToDeleteDriverRequest(request);
         driverRepository.findById(myDriver.getId()).orElseThrow(() -> new AdminNotFoundException("Driver with ID " + myDriver.getId() + " not found."));
         myDriver.setDeleted(true);

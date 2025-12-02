@@ -1,4 +1,9 @@
 package com.indrive.dtos.requets;
 
-public class FIndDriverByIdRequest {
+
+import lombok.Data;
+
+@Data
+public class FindDriverByIdRequest {
+    private String id;
 }
