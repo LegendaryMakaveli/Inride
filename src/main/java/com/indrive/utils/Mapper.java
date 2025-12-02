@@ -8,10 +8,12 @@ import com.indrive.dtos.requets.AdminRequests.DeletePassengerRequest;
 import com.indrive.dtos.requets.AdminRequests.RegisterAdminRequest;
 import com.indrive.dtos.requets.AdminRequests.RegisterPassengerRequest;
 import com.indrive.dtos.requets.FindDriverByIdRequest;
+import com.indrive.dtos.requets.RegisterDriverRequest;
 import com.indrive.dtos.responses.AdminResponses.DeleteDriverResponse;
 import com.indrive.dtos.responses.AdminResponses.DeletePassengerResponse;
 import com.indrive.dtos.responses.AdminResponses.FindDriverByIdResponse;
 import com.indrive.dtos.responses.AdminResponses.RegisterAdminResponse;
+import com.indrive.dtos.responses.RegisterDriverResponse;
 
 public class Mapper {
     public static Admin mapRequestAdmin(RegisterAdminRequest registerAdminRequest) {
@@ -23,6 +25,23 @@ public class Mapper {
         admin.setAddress(registerAdminRequest.getAddress());
         admin.setUsername(registerAdminRequest.getUsername());
         return admin;
+    }
+
+    public static Driver mapDriverRequest(RegisterDriverRequest request) {
+        Driver driver = new Driver();
+        driver.setName(request.getName());
+        driver.setEmail(request.getEmail());
+        driver.setPlateNumber(request.getPlateNumber());
+        driver.setAddress(request.getAddress());
+        driver.setPhone(request.getPhone());
+        return driver;
+    }
+
+    public  static RegisterDriverResponse mapDriverResponse(Driver savedDriver) {
+        RegisterDriverResponse registerDriverResponse = new RegisterDriverResponse();
+        registerDriverResponse.setUsername(savedDriver.getName());
+        registerDriverResponse.setMessage("Registered successfully");
+        return registerDriverResponse;
     }
 
     public static RegisterAdminResponse mapResponseAdmin(Admin savedAdmin) {
