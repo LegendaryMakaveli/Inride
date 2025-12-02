@@ -1,22 +1,27 @@
 package com.indrive.services;
 
+import com.indrive.ValidationClass.Validations;
+import com.indrive.datas.models.Passenger;
 import com.indrive.datas.models.Ride;
 import com.indrive.datas.models.RideRequest;
 import com.indrive.datas.models.RideStatus;
 import com.indrive.datas.repositories.PassengerRepository;
 import com.indrive.datas.repositories.RideRequestRepositiory;
+import com.indrive.dtos.requets.AdminRequests.RegisterPassengerRequest;
 import com.indrive.dtos.requets.BookRideRequest;
+import com.indrive.dtos.responses.AdminResponses.RegisterPassengerResponse;
 import com.indrive.dtos.responses.BookRideResponse;
 import com.indrive.dtos.responses.CancelRideResponse;
 import com.indrive.exceptions.PassengerDoesNotExistExceptions;
 import com.indrive.exceptions.RideCancelException;
 import com.indrive.exceptions.RideDoesNotRequestException;
+import org.apache.el.util.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static com.indrive.utils.PassengerMapper.map;
+import static com.indrive.utils.PassengerMapper.*;
 
 
 @Service
@@ -25,6 +30,9 @@ public class PassengerImpl implements PassengerService{
     private PassengerRepository passengerRepository;
     @Autowired
     private RideRequestRepositiory rideRequestRepositiory;
+
+
+
 
 
     @Override
