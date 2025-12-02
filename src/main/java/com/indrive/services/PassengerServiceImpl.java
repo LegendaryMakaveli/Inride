@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PassengerServiceImpl implements PassengerService {
+public class PassengerServiceImpl imgitlements PassengerService {
 
     @Autowired
     private PassengerRepository repository;
