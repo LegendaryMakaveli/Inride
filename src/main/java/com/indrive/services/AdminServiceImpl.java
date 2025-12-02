@@ -39,7 +39,6 @@ public class AdminServiceImpl implements  AdminService {
     private DriverRepository driverRepository;
     @Autowired
     private PassengerRepository passengerRepository;
-    @Autowired
     private Validations validate;
 
 
