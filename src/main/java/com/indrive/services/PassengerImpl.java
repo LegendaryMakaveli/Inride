@@ -12,16 +12,21 @@ import com.indrive.exceptions.PassengerDoesNotExistExceptions;
 import com.indrive.exceptions.RideCancelException;
 import com.indrive.exceptions.RideDoesNotRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 import static com.indrive.utils.PassengerMapper.map;
 
+
+@Service
 public class PassengerImpl implements PassengerService{
     @Autowired
     private PassengerRepository passengerRepository;
     @Autowired
     private RideRequestRepositiory rideRequestRepositiory;
+
+
     @Override
     public BookRideResponse bookRide(BookRideRequest request) {
         validatePassenger(request.getPassengerId());
