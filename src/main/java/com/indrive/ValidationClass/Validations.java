@@ -1,4 +1,4 @@
-package com.ValidationClass;
+package com.indrive.ValidationClass;
 
 import com.indrive.dtos.requets.AdminRequests.RegisterAdminRequest;
 import com.indrive.exceptions.AdminExceptions.AdminNotFoundException;
