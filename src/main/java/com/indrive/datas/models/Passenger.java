@@ -14,6 +14,8 @@ public class Passenger {
 
     private String name;
     private String email;
+    private String password;
+    private boolean activeStatus = false;
     private String phone;
     private String address;
     private String password;

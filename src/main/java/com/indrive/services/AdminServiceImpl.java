@@ -21,6 +21,7 @@ import com.indrive.exceptions.DriverNotFoundException;
 import com.indrive.exceptions.ValidateDriverException;
 import com.indrive.exceptions.PassengerNotFoundException;
 import com.indrive.exceptions.ValidatePassengerException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ import java.util.Optional;
 
 import static com.indrive.utils.Mapper.*;
 
-
+@AllArgsConstructor
 @Service
 public class AdminServiceImpl implements  AdminService {
     @Autowired
