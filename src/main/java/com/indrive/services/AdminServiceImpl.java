@@ -59,21 +59,25 @@ public class AdminServiceImpl implements  AdminService {
     @Override
     public DeleteDriverResponse deleteDriver(DeleteDriverRequest request) {
         if(request.getId() ==  null || request.getId().trim().isEmpty())throw new DriverNotFoundException("Driver not found");
-        Driver myDriver = mapToDeleteDriverRequest(request);
-        driverRepository.findById(myDriver.getId()).orElseThrow(() -> new AdminNotFoundException("Driver with ID " + myDriver.getId() + " not found."));
+
+        Driver myDriver = driverRepository.findById(request.getId()).orElseThrow(() -> new AdminNotFoundException("Driver with ID " + request.getId() + " not found."));
+
         myDriver.setDeleted(true);
+        driverRepository.save(myDriver);
         return mapToDeleteDriverResponse(myDriver);
     }
 
     @Override
     public DeletePassengerResponse deletePassenger(DeletePassengerRequest request) {
-        if(request.getId() ==  null || request.getId().trim().isEmpty())throw new ValidatePassengerException("Passenger ID cannot be empty.");
-        Passenger myPassenger = mapToPassengerRequest(request);
-        passengerRepository.findById(myPassenger.getId()).orElseThrow(() -> new PassengerNotFoundException("Passenger with ID " + myPassenger.getId() + " not found."));
-        myPassenger.setDeleted(true);
+        if (request.getId() == null || request.getId().trim().isEmpty()) throw new ValidatePassengerException("Passenger ID cannot be empty.");
 
-        return mapToPassengerResponse(myPassenger);
+        Passenger passenger = passengerRepository.findById(request.getId()).orElseThrow(() -> new PassengerNotFoundException("Passenger with ID " + request.getId() + " not found."));
+
+        passenger.setDeleted(true);
+        passengerRepository.save(passenger);
+        return mapToPassengerResponse(passenger);
     }
+
 
     @Override
     public List<Driver> getAllDrivers() {
@@ -87,13 +91,11 @@ public class AdminServiceImpl implements  AdminService {
 
     @Override
     public FindDriverByIdResponse findDriver(FindDriverByIdRequest request) {
-        if(request.getId() == null || request.getId().trim().isEmpty())throw new ValidateDriverException("Driver ID cannot be empty");
-        Optional<Driver> findDriver = driverRepository.findById(request.getId());
-        if(!findDriver.isPresent()) throw new DriverNotFoundException("Driver not found");
+        if (request.getId() == null || request.getId().trim().isEmpty()) throw new ValidateDriverException("Driver ID cannot be empty");
 
-        Driver newDriver = mapToFindDriverRequest(request);
-        driverRepository.findById(newDriver.getId());
+        Driver driver = driverRepository.findById(request.getId()).orElseThrow(() -> new DriverNotFoundException("Driver not found"));
 
-        return mapToFindDriverResponse(newDriver);
+        return mapToFindDriverResponse(driver);
     }
+
 }

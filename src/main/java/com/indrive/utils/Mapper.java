@@ -38,6 +38,7 @@ public class Mapper {
         Driver driver = new Driver();
         driver.setName(request.getName());
         driver.setEmail(request.getEmail());
+        driver.setPassword(request.getPassword());
         driver.setPlateNumber(request.getPlateNumber());
         driver.setAddress(request.getAddress());
         driver.setPhone(request.getPhone());
@@ -67,7 +68,7 @@ public class Mapper {
 
     public static DeleteDriverResponse mapToDeleteDriverResponse(Driver driver) {
         DeleteDriverResponse response = new DeleteDriverResponse();
-        response.setMessage("Driver with ID " + driver.getId() + "\n" + "Name: " + driver.getName() + "\n" + "Plate Number: " + driver.getPlateNumber() + " has been deleted successfully.");
+        response.setMessage("Driver with ID " + driver.getId() + " " + "Name: " + driver.getName() + " " + "Plate Number: " + driver.getPlateNumber() + " has been deleted successfully.");
 
         return response;
     }
@@ -81,7 +82,7 @@ public class Mapper {
 
     public static DeletePassengerResponse mapToPassengerResponse(Passenger passenger) {
         DeletePassengerResponse response = new DeletePassengerResponse();
-        response.setMessage("Passenger with ID " + passenger.getId() + "\n" + "Name: " + passenger.getName() + "\n" + "Phone Number: " + passenger.getPhone() + " has been deleted successfully.");
+        response.setMessage("Passenger with ID " + passenger.getId() + " " + "Name: " + passenger.getName() + " " + "Phone Number: " + passenger.getPhone() + " has been deleted successfully.");
 
         return response;
     }
@@ -119,7 +120,7 @@ public class Mapper {
         return response;
     }
 
-    public static Passenger mapToRegisterPassengerRequest(PassengerLoginRequest request){
+    public static Passenger mapToLoginPassengerRequest(PassengerLoginRequest request){
         Passenger newPassenger = new Passenger();
         newPassenger.setEmail(request.getPassengerEmail().trim().toLowerCase());
         newPassenger.setPassword(request.getPassengerPassword().trim().toLowerCase());
@@ -129,7 +130,7 @@ public class Mapper {
 
     public static PassengerLoginResponse mapToRegisterPassengerResponse(){
         PassengerLoginResponse response = new PassengerLoginResponse();
-        response.setMessage("Register successful");
+        response.setMessage("Login successful");
 
         return response;
     }

@@ -42,6 +42,7 @@ public class RegisterServiceImpl implements  RegisterService {
         driverRepository.findDriverByPlateNumber(request.getPlateNumber()).ifPresent(driver -> {
             throw new DriverNotFoundException("Driver with plate number " + request.getPlateNumber() + " not found.");
         });
+
         Driver driver = mapDriverRequest(request);
         Driver savedDriver = driverRepository.save(driver);
         return mapDriverResponse(savedDriver);
