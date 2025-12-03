@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface DriverRepository  extends MongoRepository<@NonNull Driver,@NonNull String> {
-
     Optional<Driver> findByEmail(String email);
+    Optional<Driver> findDriverByPlateNumber(String phoneNumber);
 }
