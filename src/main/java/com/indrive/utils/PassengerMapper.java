@@ -22,11 +22,11 @@ public class PassengerMapper {
         return passenger;
     }
 
-    public static RegisterPassengerResponse mapToRegisterPassengerResponse(Passenger passenger) {
+    public static RegisterPassengerResponse mapToRegisterPassengerResponse(Passenger savedPassenger) {
         RegisterPassengerResponse registerPassengerResponse = new RegisterPassengerResponse();
-        registerPassengerResponse.setName(passenger.getName());
-        registerPassengerResponse.setEmail(passenger.getEmail());
-        registerPassengerResponse.setPhone(passenger.getPhone());
+        registerPassengerResponse.setName(savedPassenger.getName());
+        registerPassengerResponse.setEmail(savedPassenger.getEmail());
+        registerPassengerResponse.setPhone(savedPassenger.getPhone());
         registerPassengerResponse.setMessage("Register successful");
         return registerPassengerResponse;
     }
