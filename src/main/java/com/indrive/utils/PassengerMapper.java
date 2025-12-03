@@ -1,13 +1,13 @@
 package com.indrive.utils;
 
 
-import com.indrive.datas.models.Driver;
-import com.indrive.datas.models.Passenger;
-import com.indrive.datas.models.RideRequest;
-import com.indrive.datas.models.RideStatus;
+import com.indrive.datas.models.*;
 import com.indrive.dtos.requets.AdminRequests.RegisterPassengerRequest;
 import com.indrive.dtos.requets.BookRideRequest;
+import com.indrive.dtos.requets.DriverRequest.RideApplicationRequest;
+import com.indrive.dtos.requets.DriverRequest.StartRideRequest;
 import com.indrive.dtos.responses.AdminResponses.RegisterPassengerResponse;
+import com.indrive.dtos.responses.DriverRespone.ViewRideResponse;
 
 import java.util.HashMap;
 
@@ -22,11 +22,11 @@ public class PassengerMapper {
         return passenger;
     }
 
-    public static RegisterPassengerResponse mapToRegisterPassengerResponse(Passenger passenger) {
+    public static RegisterPassengerResponse mapToRegisterPassengerResponse(Passenger savedPassenger) {
         RegisterPassengerResponse registerPassengerResponse = new RegisterPassengerResponse();
-        registerPassengerResponse.setName(passenger.getName());
-        registerPassengerResponse.setEmail(passenger.getEmail());
-        registerPassengerResponse.setPhone(passenger.getPhone());
+        registerPassengerResponse.setName(savedPassenger.getName());
+        registerPassengerResponse.setEmail(savedPassenger.getEmail());
+        registerPassengerResponse.setPhone(savedPassenger.getPhone());
         registerPassengerResponse.setMessage("Register successful");
         return registerPassengerResponse;
     }
@@ -36,7 +36,25 @@ public class PassengerMapper {
         rideRequest.setStatus(RideStatus.PENDING);
         rideRequest.setDestination(request.getDestination());
         rideRequest.setPrice(request.getFee());
-        rideRequest.setAppliedDrivers(new HashMap<String, Driver>());
+        rideRequest.setAppliedDrivers(new HashMap<String, RideApplication>());
         return rideRequest;
     }
+    public static RideApplication map(RideApplicationRequest request){
+        RideApplication rideApplication = new RideApplication();
+        rideApplication.setDriverId(request.getDriverId());
+        rideApplication.setRideRequestId(request.getRideRequestId());
+        rideApplication.setDriverPrice(request.getDriverPrice());
+        return rideApplication;
+    }
+    public static ViewRideResponse map(RideRequest rideRequest){
+        ViewRideResponse viewRideResponse = new ViewRideResponse();
+        viewRideResponse.setPassengerId(rideRequest.getPassengerId());
+        viewRideResponse.setPassengerName(rideRequest.getPassengerName());
+        viewRideResponse.setDestination(rideRequest.getDestination());
+        viewRideResponse.setStatus(rideRequest.getStatus());
+        viewRideResponse.setPrice(rideRequest.getPrice());
+        viewRideResponse.setId(rideRequest.getId());
+        return viewRideResponse;
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.indrive.datas.models;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -9,13 +10,15 @@ import java.util.List;
 @Document("Drivers")
 public class Driver {
     @Id
-    private String Id;
+    private String id;
     private String name;
     private String email;
+    private String password;
     private String phone;
     private String address;
+    private String password;
     private List<Ride> listOfRide;
-    private boolean activeStatus;
+    private boolean activeStatus = false;
     private boolean acceptanceStatus;
     private Location currentLocation;
     private String plateNumber;
