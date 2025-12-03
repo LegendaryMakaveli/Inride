@@ -18,7 +18,6 @@ public class Passenger {
     private boolean activeStatus = false;
     private String phone;
     private String address;
-    private String password;
     private Location currentlocation;
     private boolean isDeleted;
 }

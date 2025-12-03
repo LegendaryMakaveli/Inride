@@ -7,6 +7,7 @@ import com.indrive.dtos.requets.BookRideRequest;
 import com.indrive.dtos.requets.DriverRequest.RideApplicationRequest;
 import com.indrive.dtos.requets.DriverRequest.StartRideRequest;
 import com.indrive.dtos.responses.AdminResponses.RegisterPassengerResponse;
+import com.indrive.dtos.responses.BookRideResponse;
 import com.indrive.dtos.responses.DriverRespone.ViewRideResponse;
 
 import java.util.HashMap;
@@ -55,6 +56,13 @@ public class PassengerMapper {
         viewRideResponse.setPrice(rideRequest.getPrice());
         viewRideResponse.setId(rideRequest.getId());
         return viewRideResponse;
+    }
+    public static BookRideResponse mapRideResponse(RideRequest request){
+        BookRideResponse bookRideResponse = new BookRideResponse();
+        bookRideResponse.setDestination(request.getDestination());
+        bookRideResponse.setPrice(request.getPrice());
+        bookRideResponse.setRideRequestId(request.getId());
+        return bookRideResponse;
     }
 
 }

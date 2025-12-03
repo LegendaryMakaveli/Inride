@@ -1,26 +1,23 @@
 package com.indrive.services;
 
-import com.indrive.ValidationClass.Validations;
-import com.indrive.datas.models.Passenger;
-import com.indrive.datas.models.Ride;
+import com.indrive.datas.models.RideApplication;
 import com.indrive.datas.models.RideRequest;
 import com.indrive.datas.models.RideStatus;
 import com.indrive.datas.repositories.PassengerRepository;
 import com.indrive.datas.repositories.RideRequestRepositiory;
-import com.indrive.dtos.requets.AdminRequests.RegisterPassengerRequest;
 import com.indrive.dtos.requets.BookRideRequest;
-import com.indrive.dtos.responses.AdminResponses.RegisterPassengerResponse;
 import com.indrive.dtos.responses.BookRideResponse;
 import com.indrive.dtos.responses.CancelRideResponse;
 import com.indrive.exceptions.PassengerDoesNotExistExceptions;
 import com.indrive.exceptions.RideCancelException;
 import com.indrive.exceptions.RideDoesNotRequestException;
-import org.apache.el.util.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.Map;
 
+import static com.indrive.utils.Mapper.mapToCancelRideResponse;
 import static com.indrive.utils.PassengerMapper.*;
 
 
@@ -39,8 +36,7 @@ public class PassengerImpl implements PassengerService{
     public BookRideResponse bookRide(BookRideRequest request) {
         validatePassenger(request.getPassengerId());
         RideRequest rideRequest = map(request);
-        rideRequestRepositiory.save(rideRequest);
-        return null;
+        return mapRideResponse(rideRequestRepositiory.save(rideRequest));
     }
 
     @Override
@@ -49,8 +45,17 @@ public class PassengerImpl implements PassengerService{
         validateRideStatus(rideRequestId);
         RideRequest request = searchForRideRequest(rideRequestId);
         request.setStatus(RideStatus.CANCELLED);
-        return null;
+        return mapToCancelRideResponse(request);
     }
+
+    @Override
+    public Map<String, RideApplication> viewAppliedDrivers(String rideRequestId) {
+        RideRequest rideRequest = searchForRideRequest(rideRequestId);
+        validateRideRequest(rideRequestId);
+        return rideRequest.getAppliedDrivers();
+    }
+
+
 
     private void validatePassenger(String id){
         if(!passengerRepository.existsById(id)) throw new PassengerDoesNotExistExceptions("Passenger Does not Exist");
@@ -66,4 +71,8 @@ public class PassengerImpl implements PassengerService{
         return rideRequestRepositiory.findById(id).isPresent() ? rideRequestRepositiory.findById(id).get() : null;
     }
 
-}
+
+
+
+    }
+
