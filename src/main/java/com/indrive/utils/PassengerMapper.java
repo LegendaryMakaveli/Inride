@@ -19,11 +19,13 @@ public class PassengerMapper {
         passenger.setEmail(request.getEmail());
         passenger.setPhone(request.getPhone());
         passenger.setAddress(request.getAddress());
+        passenger.setPassword(request.getPassword());
         return passenger;
     }
 
     public static RegisterPassengerResponse mapToRegisterPassengerResponse(Passenger savedPassenger) {
         RegisterPassengerResponse registerPassengerResponse = new RegisterPassengerResponse();
+        registerPassengerResponse.setId(savedPassenger.getId());
         registerPassengerResponse.setName(savedPassenger.getName());
         registerPassengerResponse.setEmail(savedPassenger.getEmail());
         registerPassengerResponse.setPhone(savedPassenger.getPhone());
