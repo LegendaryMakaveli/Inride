@@ -25,7 +25,8 @@ import static com.indrive.utils.PassengerMapper.*;
 
 
 @Service
-public class PassengerImpl implements PassengerService{
+public class
+PassengerImpl implements PassengerService{
     @Autowired
     private PassengerRepository passengerRepository;
     @Autowired
