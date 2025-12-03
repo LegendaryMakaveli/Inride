@@ -11,14 +11,12 @@ public class Passenger {
 
     @Id
     private String id;
-
     private String name;
     private String email;
     private String password;
     private boolean activeStatus = false;
     private String phone;
     private String address;
-    private String password;
     private Location currentlocation;
     private boolean isDeleted;
 }
