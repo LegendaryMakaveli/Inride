@@ -3,6 +3,7 @@ package com.indrive.utils;
 import com.indrive.datas.models.Admin;
 import com.indrive.datas.models.Driver;
 import com.indrive.datas.models.Passenger;
+import com.indrive.datas.models.RideRequest;
 import com.indrive.dtos.requets.AdminRequests.DeleteDriverRequest;
 import com.indrive.dtos.requets.AdminRequests.DeletePassengerRequest;
 import com.indrive.dtos.requets.AdminRequests.RegisterAdminRequest;
@@ -11,6 +12,7 @@ import com.indrive.dtos.requets.DriverLoginRequest;
 import com.indrive.dtos.requets.FindDriverByIdRequest;
 import com.indrive.dtos.requets.PassengerLoginRequest;
 import com.indrive.dtos.responses.AdminResponses.*;
+import com.indrive.dtos.responses.CancelRideResponse;
 import com.indrive.dtos.responses.DriverLoginResponse;
 import com.indrive.dtos.responses.PassengerLoginResponse;
 import com.indrive.dtos.requets.RegisterDriverRequest;
@@ -129,6 +131,11 @@ public class Mapper {
         PassengerLoginResponse response = new PassengerLoginResponse();
         response.setMessage("Register successful");
 
+        return response;
+    }
+    public static CancelRideResponse mapToCancelRideResponse(RideRequest rideRequest){
+        CancelRideResponse response = new CancelRideResponse();
+        response.setRideRequestId(rideRequest.getId());
         return response;
     }
 }

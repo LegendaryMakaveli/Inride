@@ -16,7 +16,6 @@ public class Driver {
     private String password;
     private String phone;
     private String address;
-    private String password;
     private List<Ride> listOfRide;
     private boolean activeStatus = false;
     private boolean acceptanceStatus;
