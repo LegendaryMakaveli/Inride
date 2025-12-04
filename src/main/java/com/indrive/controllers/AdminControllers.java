@@ -61,7 +61,7 @@ public class AdminControllers {
         return new ResponseEntity<>(adminService.getAllPassengers(), HttpStatus.OK);
     }
 
-    @PostMapping("/admin/findDriverById")
+    @GetMapping("/admin/findDriverById")
     public ResponseEntity<?>findDriverById(@RequestBody FindDriverByIdRequest request){
         try{
             return new ResponseEntity<>(new ApiResponse(true, adminService.findDriver(request)), HttpStatus.OK);
@@ -70,5 +70,6 @@ public class AdminControllers {
             return new ResponseEntity<>(new ApiResponse(false, error.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
+
 
 }
