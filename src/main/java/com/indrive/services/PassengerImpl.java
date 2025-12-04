@@ -1,5 +1,6 @@
 package com.indrive.services;
 
+import com.indrive.ValidationClass.Validations;
 import com.indrive.datas.models.*;
 import com.indrive.datas.repositories.DriverRepository;
 import com.indrive.datas.repositories.PassengerRepository;
@@ -33,6 +34,8 @@ PassengerImpl implements PassengerService{
     private DriverRepository driverRepository;
     @Autowired
     private RideRepository rideRepository;
+    @Autowired
+    private Validations validate;
 
 
 
@@ -41,6 +44,7 @@ PassengerImpl implements PassengerService{
     @Override
     public BookRideResponse bookRide(BookRideRequest request) {
         validatePassenger(request.getPassengerId());
+        validate.validatePassengerStatus(validate.searchForPassenger(request.getPassengerId()));
         RideRequest rideRequest = map(request);
         return mapRideResponse(rideRequestRepositiory.save(rideRequest));
     }
@@ -50,27 +54,55 @@ PassengerImpl implements PassengerService{
         validateRideRequest(rideRequestId);
         validateRideStatus(rideRequestId);
         RideRequest request = searchForRideRequest(rideRequestId);
+        validate.validatePassengerStatus(validate.searchForPassenger(request.getPassengerId()));
         request.setStatus(RideStatus.CANCELLED);
         return mapToCancelRideResponse(request);
     }
 
     @Override
     public Map<String, RideApplication> viewAppliedDrivers(String rideRequestId) {
-        RideRequest rideRequest = searchForRideRequest(rideRequestId);
+        RideRequest request = searchForRideRequest(rideRequestId);
+        validate.validatePassengerStatus(validate.searchForPassenger(request.getPassengerId()));
         validateRideRequest(rideRequestId);
-        return rideRequest.getAppliedDrivers();
+        return request.getAppliedDrivers();
     }
 
     @Override
     public AcceptDriverResponse acceptDriverRequest(AcceptDriverRequest request) {
         validateRideRequest(request.getRideRequestId());
         RideRequest rideRequest = searchForRideRequest(request.getRideRequestId());
-      Driver updatedStatusDriver = setDriverStatus(request.getDriverId());
+        validate.validatePassengerStatus(validate.searchForPassenger(rideRequest.getPassengerId()));
+        Driver updatedStatusDriver = setDriverStatus(request.getDriverId());
       setRideRequestStatus(rideRequest);
 
       addRideToAcceptedDriverList(createRide(rideRequest,updatedStatusDriver.getId()));
        return map(driverRepository.save(updatedStatusDriver));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private Ride createRide(RideRequest rideRequest,String driverId) {
         Ride ride = mapRide(rideRequest);
@@ -78,7 +110,6 @@ PassengerImpl implements PassengerService{
         ride.setRideFee(getAcceptedDriverFee(rideRequest,ride.getDriverId()));
         return rideRepository.save(ride);
     }
-
     private void addRideToAcceptedDriverList(Ride ride){
         searchForDriver(ride.getDriverId()).getListOfRide().add(ride);
     }
@@ -86,19 +117,15 @@ PassengerImpl implements PassengerService{
         RideApplication driverRideApplication = rideRequest.getAppliedDrivers().get(driverId);
         return driverRideApplication.getDriverPrice();
     }
-
     private void setRideRequestStatus(RideRequest request) {
         request.setStatus(RideStatus.ACCEPTED);
         rideRequestRepositiory.save(request);
     }
-
     private Driver setDriverStatus(String driverId) {
         Driver driver = searchForDriver(driverId);
         driver.setAcceptanceStatus(true);
         return driver;
     }
-
-
     private void validatePassenger(String id){
         if(!passengerRepository.existsById(id)) throw new PassengerDoesNotExistExceptions("Passenger Does not Exist");
     }
