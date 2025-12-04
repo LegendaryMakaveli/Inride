@@ -1,11 +1,13 @@
 package com.indrive.services;
 
-import com.indrive.datas.models.RideApplication;
-import com.indrive.datas.models.RideRequest;
-import com.indrive.datas.models.RideStatus;
+import com.indrive.datas.models.*;
+import com.indrive.datas.repositories.DriverRepository;
 import com.indrive.datas.repositories.PassengerRepository;
+import com.indrive.datas.repositories.RideRepository;
 import com.indrive.datas.repositories.RideRequestRepositiory;
+import com.indrive.dtos.requets.AcceptDriverRequest;
 import com.indrive.dtos.requets.BookRideRequest;
+import com.indrive.dtos.responses.AdminResponses.AcceptDriverResponse;
 import com.indrive.dtos.responses.BookRideResponse;
 import com.indrive.dtos.responses.CancelRideResponse;
 import com.indrive.exceptions.PassengerDoesNotExistExceptions;
@@ -14,10 +16,9 @@ import com.indrive.exceptions.RideDoesNotRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
-import static com.indrive.utils.Mapper.mapToCancelRideResponse;
+import static com.indrive.utils.Mapper.*;
 import static com.indrive.utils.PassengerMapper.*;
 
 
@@ -28,6 +29,10 @@ PassengerImpl implements PassengerService{
     private PassengerRepository passengerRepository;
     @Autowired
     private RideRequestRepositiory rideRequestRepositiory;
+    @Autowired
+    private DriverRepository driverRepository;
+    @Autowired
+    private RideRepository rideRepository;
 
 
 
@@ -56,6 +61,42 @@ PassengerImpl implements PassengerService{
         return rideRequest.getAppliedDrivers();
     }
 
+    @Override
+    public AcceptDriverResponse acceptDriverRequest(AcceptDriverRequest request) {
+        validateRideRequest(request.getRideRequestId());
+        RideRequest rideRequest = searchForRideRequest(request.getRideRequestId());
+      Driver updatedStatusDriver = setDriverStatus(request.getDriverId());
+      setRideRequestStatus(rideRequest);
+
+      addRideToAcceptedDriverList(createRide(rideRequest,updatedStatusDriver.getId()));
+       return map(driverRepository.save(updatedStatusDriver));
+    }
+
+    private Ride createRide(RideRequest rideRequest,String driverId) {
+        Ride ride = mapRide(rideRequest);
+        ride.setDriverId(driverId);
+        ride.setRideFee(getAcceptedDriverFee(rideRequest,ride.getDriverId()));
+        return rideRepository.save(ride);
+    }
+
+    private void addRideToAcceptedDriverList(Ride ride){
+        searchForDriver(ride.getDriverId()).getListOfRide().add(ride);
+    }
+    private double getAcceptedDriverFee(RideRequest rideRequest,String driverId) {
+        RideApplication driverRideApplication = rideRequest.getAppliedDrivers().get(driverId);
+        return driverRideApplication.getDriverPrice();
+    }
+
+    private void setRideRequestStatus(RideRequest request) {
+        request.setStatus(RideStatus.ACCEPTED);
+        rideRequestRepositiory.save(request);
+    }
+
+    private Driver setDriverStatus(String driverId) {
+        Driver driver = searchForDriver(driverId);
+        driver.setAcceptanceStatus(true);
+        return driver;
+    }
 
 
     private void validatePassenger(String id){
@@ -70,6 +111,9 @@ PassengerImpl implements PassengerService{
     }
     private RideRequest searchForRideRequest(String id){
         return rideRequestRepositiory.findById(id).isPresent() ? rideRequestRepositiory.findById(id).get() : null;
+    }
+    private Driver searchForDriver(String id){
+       return driverRepository.findById(id).isPresent() ?driverRepository.findById(id).get() : null;
     }
 
 

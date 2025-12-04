@@ -7,6 +7,6 @@ import lombok.Data;
 import java.time.LocalDateTime;
 @Data
 public class StartRideRequest {
-    private LocalDateTime timeDateStamp;
-    private String rideApplicationId;
+    private String rideId;
+    private String driverId;
 }

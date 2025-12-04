@@ -10,6 +10,7 @@ import com.indrive.dtos.responses.AdminResponses.RegisterPassengerResponse;
 import com.indrive.dtos.responses.BookRideResponse;
 import com.indrive.dtos.responses.DriverRespone.ViewRideResponse;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class PassengerMapper {
@@ -67,4 +68,12 @@ public class PassengerMapper {
         return bookRideResponse;
     }
 
+    public static Ride mapRide(RideRequest rideRequest){
+        Ride ride = new Ride();
+        ride.setPassengerId(rideRequest.getPassengerId());
+        ride.setDestination(rideRequest.getDestination());
+        ride.setRideStatus(rideRequest.getStatus());
+        ride.setTimeStamp(LocalDateTime.now());
+        return ride;
+    }
 }

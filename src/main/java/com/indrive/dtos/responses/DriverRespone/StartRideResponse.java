@@ -1,4 +1,9 @@
 package com.indrive.dtos.responses.DriverRespone;
 
-public class StartRideResponse {
+import lombok.Data;
+
+@Data
+public class StartRideResponse { ;
+    private String rideStatus;
+    private String rideFee;
 }

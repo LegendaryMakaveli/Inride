@@ -18,5 +18,4 @@ public class Ride {
     private LocalDateTime timeStamp;
     private String driverId;
     private RideStatus rideStatus;
-
 }

@@ -1,19 +1,19 @@
 package com.indrive.utils;
 
-import com.indrive.datas.models.Admin;
-import com.indrive.datas.models.Driver;
-import com.indrive.datas.models.Passenger;
-import com.indrive.datas.models.RideRequest;
+import com.indrive.datas.models.*;
 import com.indrive.dtos.requets.AdminRequests.DeleteDriverRequest;
 import com.indrive.dtos.requets.AdminRequests.DeletePassengerRequest;
 import com.indrive.dtos.requets.AdminRequests.RegisterAdminRequest;
 import com.indrive.dtos.requets.AdminRequests.RegisterPassengerRequest;
 import com.indrive.dtos.requets.DriverLoginRequest;
+import com.indrive.dtos.requets.DriverRequest.EndRideResponse;
+import com.indrive.dtos.requets.DriverRequest.StartRideRequest;
 import com.indrive.dtos.requets.FindDriverByIdRequest;
 import com.indrive.dtos.requets.PassengerLoginRequest;
 import com.indrive.dtos.responses.AdminResponses.*;
 import com.indrive.dtos.responses.CancelRideResponse;
 import com.indrive.dtos.responses.DriverLoginResponse;
+import com.indrive.dtos.responses.DriverRespone.StartRideResponse;
 import com.indrive.dtos.responses.PassengerLoginResponse;
 import com.indrive.dtos.requets.RegisterDriverRequest;
 import com.indrive.dtos.responses.AdminResponses.DeleteDriverResponse;
@@ -21,6 +21,10 @@ import com.indrive.dtos.responses.AdminResponses.DeletePassengerResponse;
 import com.indrive.dtos.responses.AdminResponses.FindDriverByIdResponse;
 import com.indrive.dtos.responses.AdminResponses.RegisterAdminResponse;
 import com.indrive.dtos.responses.RegisterDriverResponse;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Mapper {
     public static Admin mapRequestAdmin(RegisterAdminRequest registerAdminRequest) {
@@ -42,6 +46,7 @@ public class Mapper {
         driver.setPlateNumber(request.getPlateNumber());
         driver.setAddress(request.getAddress());
         driver.setPhone(request.getPhone());
+        driver.setListOfRide(new ArrayList<>());
         return driver;
     }
 
@@ -139,5 +144,26 @@ public class Mapper {
         response.setRideRequestId(rideRequest.getId());
         return response;
     }
+
+    public static AcceptDriverResponse map(Driver driver){
+        AcceptDriverResponse response = new AcceptDriverResponse();
+        response.setDriverName(driver.getName());
+        response.setPhoneNumber(driver.getPhone());
+        response.setEmail(driver.getEmail());
+        return response;
+    }
+    public static StartRideResponse map(Ride ride){
+        StartRideResponse response = new StartRideResponse();
+        response.setRideStatus(RideStatus.IN_PROGRESS + "");
+        response.setRideFee(ride.getRideFee() + "");
+        return response;
+    }
+    public static EndRideResponse mapResponse(Ride ride){
+        EndRideResponse response = new EndRideResponse();
+        response.setRideEndTime(DateTimeFormatter.ofPattern("EEE yyyy MM dd H:mm:s").format(LocalDateTime.now()));
+        response.setRideFee(ride.getRideFee());
+        return response;
+    }
+
 }
 
