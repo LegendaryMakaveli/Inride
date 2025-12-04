@@ -16,7 +16,6 @@ import com.indrive.dtos.responses.AdminResponses.DeletePassengerResponse;
 import com.indrive.dtos.responses.AdminResponses.FindDriverByIdResponse;
 import com.indrive.dtos.responses.AdminResponses.RegisterAdminResponse;
 import com.indrive.exceptions.AdminExceptions.AdminNotFoundException;
-
 import com.indrive.exceptions.DriverNotFoundException;
 import com.indrive.exceptions.ValidateDriverException;
 import com.indrive.exceptions.PassengerNotFoundException;
@@ -26,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.indrive.utils.Mapper.*;
 
@@ -40,7 +38,6 @@ public class AdminServiceImpl implements  AdminService {
     @Autowired
     private PassengerRepository passengerRepository;
     private Validations validate;
-
 
 
     @Override
