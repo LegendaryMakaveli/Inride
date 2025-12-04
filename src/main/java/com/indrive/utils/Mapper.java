@@ -21,6 +21,7 @@ import com.indrive.dtos.responses.AdminResponses.DeletePassengerResponse;
 import com.indrive.dtos.responses.AdminResponses.FindDriverByIdResponse;
 import com.indrive.dtos.responses.AdminResponses.RegisterAdminResponse;
 import com.indrive.dtos.responses.RegisterDriverResponse;
+import com.indrive.exceptions.BookingStatusExceptions;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -142,6 +143,7 @@ public class Mapper {
     public static CancelRideResponse mapToCancelRideResponse(RideRequest rideRequest){
         CancelRideResponse response = new CancelRideResponse();
         response.setRideRequestId(rideRequest.getId());
+        response.setDateOFCancellation(DateTimeFormatter.ofPattern("EEE yyy MM dd H:mm:s").format(LocalDateTime.now()));
         return response;
     }
 
@@ -164,6 +166,5 @@ public class Mapper {
         response.setRideFee(ride.getRideFee());
         return response;
     }
-
 }
 

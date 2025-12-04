@@ -1,5 +1,6 @@
 package com.indrive.services;
 
+import com.indrive.ValidationClass.Validations;
 import com.indrive.datas.models.*;
 import com.indrive.datas.repositories.DriverRepository;
 import com.indrive.datas.repositories.RideRepository;
@@ -30,16 +31,25 @@ public class DriverServiceImpl implements DriverService {
     private DriverRepository driverRepository;
     @Autowired
     private RideRepository rideRepository;
+
+    @Autowired
+    private Validations validate;
+
+
     @Override
     public RideApplicationResponse applyForRideRequest(RideApplicationRequest request) {
-        RideRequest rideRequest = searchForRideRequest(request.getRideRequestId());
-        validateRideRequest(rideRequest);
-        Driver foundDriver = searchForDriver(request.getDriverId());
-        validateDriver(foundDriver);
-        validateDriverStatus(foundDriver);
-        rideRequest.setStatus(RideStatus.IN_PROGRESS);
+        RideRequest rideRequest = validate.searchForRideRequest(request.getRideRequestId());
+        validate.validateRideRequest(rideRequest);
 
+        Driver foundDriver = validate.searchForDriver(request.getDriverId());
+        validate.validateLoginStatus(validate.searchForDriver(request.getDriverId()));
+
+        validate.validateDriver(foundDriver);
+        validate.validateDriverStatus(foundDriver);
+
+        rideRequest.setStatus(RideStatus.IN_PROGRESS);
         RideApplication application = map(request);
+
         rideRequest.getAppliedDrivers().put(request.getDriverId(),application);
         rideRequestRepositiory.save(rideRequest);
         return null;
@@ -47,7 +57,8 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public List<ViewRideResponse> viewAvailableRides(ViewRideRequest request) {
-       validateDriver(searchForDriver(request.getDriverId()));
+       validate.validateDriver(validate.searchForDriver(request.getDriverId()));
+       validate.validateLoginStatus(validate.searchForDriver(request.getDriverId()));
         List<ViewRideResponse> listOfRequest = new ArrayList<>();
        for(RideRequest rideRequest: rideRequestRepositiory.findAll()){
            if(rideRequest.getStatus().equals(RideStatus.PENDING))
@@ -58,42 +69,24 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public StartRideResponse startRide(StartRideRequest request) {
-        Ride ride = searchForRide(request.getRideId());
-        validateRide(ride);
-        Driver driver = searchForDriver(request.getDriverId());
-        validateDriver(driver);
+        Ride ride = validate.searchForRide(request.getRideId());
+        validate.validateRide(ride);
+        Driver driver = validate.searchForDriver(request.getDriverId());
+        validate.validateLoginStatus(validate.searchForDriver(request.getDriverId()));
+        validate.validateDriver(driver);
         ride.setRideStatus(RideStatus.IN_PROGRESS);
         return map(rideRepository.save(ride));
     }
 
     @Override
     public EndRideResponse endRide(EndRideRequest request) {
-        Ride ride = searchForRide(request.getRideId());
-        validateRide(ride);
+        validate.validateLoginStatus(validate.searchForDriver(request.getDriverId()));
+        Ride ride = validate.searchForRide(request.getRideId());
+        validate.validateRide(ride);
         ride.setRideStatus(RideStatus.COMPLETED);
+        Driver rideDriver = validate.searchForDriver(ride.getDriverId());
+        rideDriver.setAcceptanceStatus(false);
+        driverRepository.save(rideDriver);
         return mapResponse(rideRepository.save(ride));
-    }
-
-
-    private RideRequest searchForRideRequest(String rideRequestId) {
-        return rideRequestRepositiory.findById(rideRequestId).isPresent() ? rideRequestRepositiory.findById(rideRequestId).get() : null;
-    }
-    private void validateRideRequest(RideRequest rideRequest) {
-        if(rideRequest == null) throw new RideRequestDoesNotExit("Ride Request Does not Exist");
-    }
-    private Driver searchForDriver(String driverId) {
-        return driverRepository.findById(driverId).isPresent() ? driverRepository.findById(driverId).get() : null;
-    }
-    private void validateDriver(Driver driver) {
-        if(driver == null) throw new DriverNotFoundException("Driver Does not Exist");
-    }
-    private void validateDriverStatus(Driver driver) {
-        if(driver.isAcceptanceStatus()) throw new BookingStatusExceptions("Can Not Apply For Ride");
-    }
-    private Ride searchForRide(String rideId) {
-        return rideRepository.findById(rideId).isPresent() ? rideRepository.findById(rideId).get() : null;
-    }
-    private void validateRide(Ride ride){
-        if(ride == null) throw new RideDoesExit("Ride Does not Exist");
     }
 }

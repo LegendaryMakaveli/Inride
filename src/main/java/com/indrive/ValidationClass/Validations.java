@@ -1,20 +1,33 @@
 package com.indrive.ValidationClass;
 
+import com.indrive.datas.models.*;
+import com.indrive.datas.repositories.DriverRepository;
+import com.indrive.datas.repositories.PassengerRepository;
+import com.indrive.datas.repositories.RideRepository;
+import com.indrive.datas.repositories.RideRequestRepositiory;
 import com.indrive.dtos.requets.AdminRequests.RegisterAdminRequest;
 import com.indrive.dtos.requets.AdminRequests.RegisterPassengerRequest;
 import com.indrive.dtos.requets.RegisterDriverRequest;
+import com.indrive.exceptions.*;
 import com.indrive.exceptions.AdminExceptions.AdminNotFoundException;
 import com.indrive.exceptions.AdminExceptions.AdminValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import com.indrive.exceptions.DriverNotFoundException;
-import com.indrive.exceptions.PassengerNotFoundException;
-import com.indrive.exceptions.PasswordMustBeStrongException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Validations {
+    @Autowired
+    private RideRepository rideRepository;
+    @Autowired
+    private RideRequestRepositiory rideRequestRepositiory;
+    @Autowired
+    private DriverRepository driverRepository;
+    @Autowired
+    private PassengerRepository passengerRepository;
+
 
     public void adminPasswordValidation(RegisterAdminRequest registerAdminRequest) {
         if(registerAdminRequest.getPassword().length() < 6) throw new AdminValidationException("Password must be at least 6 characters long.");
@@ -22,6 +35,7 @@ public class Validations {
         String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_])[^\\s]{6,15}$";
         if(!registerAdminRequest.getPassword().matches(passwordPattern))throw new AdminValidationException("Passwords do not match");
     }
+
     public void adminRequestValidations(RegisterAdminRequest registerAdminRequest) {
         if(registerAdminRequest.getEmail() == null || registerAdminRequest.getEmail().trim().isEmpty()) throw new AdminNotFoundException("Email cannot be empty.");
         if(registerAdminRequest.getUsername() == null || registerAdminRequest.getUsername().trim().isEmpty()) throw new AdminNotFoundException("Username cannot be empty.");
@@ -54,6 +68,7 @@ public class Validations {
         if (registerPassengerRequest.getPassword().length()<6) throw new PasswordMustBeStrongException("password must be at least 6 characters long.");
         if(registerPassengerRequest.getPassword().trim().isEmpty()) throw new PasswordMustBeStrongException("Password cannot be empty.");
     }
+
     public void passengerRequestValidations(RegisterPassengerRequest registerPassengerRequest) {
         if(registerPassengerRequest.getPhone() == null || registerPassengerRequest.getPhone().trim().isEmpty()) throw new PassengerNotFoundException("Phone cannot be empty.");
         if(registerPassengerRequest.getName() == null || registerPassengerRequest.getName().trim().isEmpty()) throw new PassengerNotFoundException("Name cannot be empty.");
@@ -61,4 +76,37 @@ public class Validations {
         if(registerPassengerRequest.getAddress() == null || registerPassengerRequest.getAddress().trim().isEmpty()) throw new PassengerNotFoundException("Address cannot be empty.");
         if(registerPassengerRequest.getPhone().length() != 11) throw new PassengerNotFoundException("Phone number must be 11 digits long.");
     }
+
+    public RideRequest searchForRideRequest(String rideRequestId) {
+        return rideRequestRepositiory.findById(rideRequestId).isPresent() ? rideRequestRepositiory.findById(rideRequestId).get() : null;
+    }
+    public void validateRideRequest(RideRequest rideRequest) {
+        if(rideRequest == null) throw new RideRequestDoesNotExit("Ride Request Does not Exist");
+    }
+    public Driver searchForDriver(String driverId) {
+        return driverRepository.findById(driverId).isPresent() ? driverRepository.findById(driverId).get() : null;
+    }
+    public void validateDriver(Driver driver) {
+        if(driver == null) throw new DriverNotFoundException("Driver Does not Exist");
+    }
+    public void validateDriverStatus(Driver driver) {
+        if(driver.isAcceptanceStatus()) throw new BookingStatusExceptions("Can Not Apply For Ride");
+    }
+    public Ride searchForRide(String rideId) {
+        return rideRepository.findById(rideId).isPresent() ? rideRepository.findById(rideId).get() : null;
+    }
+    public void validateRide(Ride ride){
+        if(ride == null) throw new RideDoesExit("Ride Does not Exist");
+    }
+    public void validateLoginStatus(Driver driver){
+        if(!driver.isActiveStatus()) throw new LoginStatusException("Driver is not active");
+    }
+
+    public Passenger searchForPassenger(String passengerId){
+        return passengerRepository.findById(passengerId).isPresent() ? passengerRepository.findById(passengerId).get() : null;
+    }
+    public void validatePassengerStatus(Passenger passenger){
+        if(!passenger.isActiveStatus()) throw new LoginStatusException("Passenger is not active");
+    }
+
 }
